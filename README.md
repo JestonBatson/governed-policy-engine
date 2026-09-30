@@ -1,5 +1,7 @@
 # Governed Policy Engine
 
+[![CI](https://github.com/JestonBatson/governed-policy-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/JestonBatson/governed-policy-engine/actions/workflows/ci.yml)
+
 A small, deterministic authorization service for AI-enabled systems. It decides
 whether a request is **allowed**, **denied**, or **requires human approval**,
 then emits an integrity-protected audit event. It does not execute tools, call
