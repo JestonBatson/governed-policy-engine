@@ -27,7 +27,10 @@ def wait_for_api(base_url: str) -> None:
         try:
             if call(base_url, "GET", "/v1/health")["status"] == "ok":
                 return
-        except (URLError, TimeoutError):
+        # A container can accept a TCP connection while Uvicorn is still
+        # completing startup, briefly resetting the first HTTP request.
+        # Treat that as a not-ready signal rather than failing the demo early.
+        except (URLError, OSError):
             time.sleep(1)
     raise RuntimeError("API did not become healthy within 30 seconds")
 
