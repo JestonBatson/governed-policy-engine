@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AUDIT_SIGNING_KEY: ci-only-not-a-secret
+      GPE_HOST_PORT: "18000"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -30,7 +31,7 @@ jobs:
       - name: Run API approval-flow smoke test
         run: |
           docker compose up --build --detach
-          python scripts/approval_demo.py --base-url http://localhost:8000 --wait
+          python scripts/approval_demo.py --base-url http://localhost:18000 --wait
       - name: Collect service logs on failure
         if: failure()
         run: docker compose logs
