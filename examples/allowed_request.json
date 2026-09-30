@@ -1,0 +1,5 @@
+{
+  "actor": {"id": "analyst-7", "roles": ["analyst"]},
+  "action": "report.read",
+  "resource": "report:quarterly-risk"
+}

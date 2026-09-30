@@ -1,0 +1,24 @@
+[
+  {
+    "id": "block-secret-exports",
+    "effect": "deny",
+    "actions": ["data.export"],
+    "resources": ["dataset:restricted/*"],
+    "any_roles": ["*"]
+  },
+  {
+    "id": "read-reports",
+    "effect": "allow",
+    "actions": ["report.read"],
+    "resources": ["report:*"],
+    "any_roles": ["analyst", "auditor"]
+  },
+  {
+    "id": "production-release",
+    "effect": "require_approval",
+    "actions": ["deployment.release"],
+    "resources": ["environment:production"],
+    "any_roles": ["release_manager"],
+    "expires_at": "2027-01-01T00:00:00Z"
+  }
+]

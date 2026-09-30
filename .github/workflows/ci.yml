@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      AUDIT_SIGNING_KEY: ci-only-not-a-secret
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install package and test tools
+        run: python -m pip install '.[dev]'
+      - name: Compile source
+        run: python -m compileall -q src
+      - name: Run tests
+        run: python -m pytest -q
+      - name: Build container image
+        run: docker build --tag governed-policy-engine:ci .
+      - name: Validate Compose configuration
+        run: docker compose config
+      - name: Run API approval-flow smoke test
+        run: |
+          docker compose up --build --detach
+          python scripts/approval_demo.py --base-url http://localhost:8000 --wait
+      - name: Collect service logs on failure
+        if: failure()
+        run: docker compose logs
+      - name: Stop services
+        if: always()
+        run: docker compose down --volumes --remove-orphans

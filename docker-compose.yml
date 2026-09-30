@@ -1,0 +1,10 @@
+services:
+  policy-engine:
+    build: .
+    environment:
+      AUDIT_SIGNING_KEY: ${AUDIT_SIGNING_KEY:?set AUDIT_SIGNING_KEY in .env}
+      AUDIT_LOG_PATH: /data/audit.jsonl
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./var:/data
